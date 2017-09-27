@@ -1,16 +1,4 @@
 'use strict';
-/*
-      {
-        name: '',
-        level: ,
-        percent: {
-          '': [],
-          '': [],
-          '': [],
-          '': []
-        }
-      },
-*/
 var things = {
   'Шлемы': {
     'Стандартные вещи': [
@@ -151,21 +139,14 @@ var things = {
 
 function HEsBuild()
 {
-  var LCat, LType, LThings, LThing, LName, LParams = {}, i;
-  for(LCat in things)
+  var LThing, LName, LParams = {}, i;
+  for(i = 0; i < Things.length; i++)
   {
-    for(LType in things[LCat])
-    {
-      LThings = things[LCat][LType];
-      for(i = 0; i < LThings.length; i++)
-      {
-        LThing = LThings[i];
-        for(LName in LThing.percent)
-          LParams[LName] = true;
-      }                      
-    }
-  }
-  LParams = Object.keys(LParams);  
+    LThing = Things[i];
+    for(LName in LThing.percent)
+      LParams[LName] = true;
+  }                      
+  LParams = Object.keys(LParams).sort();  
 
   var LFragHE = document.createDocumentFragment();
   var LTableHE = LFragHE.appendChild(document.createElement('table'));
@@ -178,28 +159,21 @@ function HEsBuild()
   for(i = 0; i < LParams.length; i++)
     LTRTHHE.appendChild(document.createElement('th')).innerHTML = '<div><span>' + LParams[i] + '</span></div>'; 
 
-  for(LCat in things)
+  for(i = 0; i < Things.length; i++)
   {
-    for(LType in things[LCat])
+    LThing = Things[i];
+    var LTRHE = LTableHE.appendChild(document.createElement('tr'));
+    LTRHE.appendChild(document.createElement('td')).innerHTML = LThing.name;
+    LTRHE.appendChild(document.createElement('td')).innerHTML = LThing.level;
+    LTRHE.appendChild(document.createElement('td')).innerHTML = LThing.category;
+    LTRHE.appendChild(document.createElement('td')).innerHTML = LThing.type;
+    for(var j = 0; j < LParams.length; j++)
     {
-      LThings = things[LCat][LType];
-      for(i = 0; i < LThings.length; i++)
-      {
-        LThing = LThings[i];
-        var LTRHE = LTableHE.appendChild(document.createElement('tr'));
-        LTRHE.appendChild(document.createElement('td')).innerHTML = LThing.name;
-        LTRHE.appendChild(document.createElement('td')).innerHTML = LThing.level;
-        LTRHE.appendChild(document.createElement('td')).innerHTML = LCat;
-        LTRHE.appendChild(document.createElement('td')).innerHTML = LType;
-        for(var j = 0; j < LParams.length; j++)
-        {
-          var LTDHE = LTRHE.appendChild(document.createElement('td'));
-          var LPercent = LThing.percent[LParams[j]];
-          LTDHE.innerHTML = (LPercent ? LPercent[5] : '');  
-        }
-      }                      
+      var LTDHE = LTRHE.appendChild(document.createElement('td'));
+      var LPercent = LThing.percent[LParams[j]];
+      LTDHE.innerHTML = (LPercent ? LPercent[5] : '');  
     }
-  }
+  }                      
   document.body.appendChild(LFragHE);
 }
 HEsBuild();
