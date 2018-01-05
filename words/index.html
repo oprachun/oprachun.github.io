@@ -1,0 +1,213 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style>
+body {
+  font: 13px Tahoma;
+  margin: 0;
+  padding: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0 auto;
+}
+tr {
+  background-color: #DDDDDD;
+}
+tr:nth-child(odd) {
+  background-color: #EEEEEE;
+}
+th {
+  background-color: initial;
+  white-space: nowrap;
+}
+table, td, th {
+  border: 1px solid gray;
+}
+</style>
+</head>
+<body>                                                        
+<label>Word: <input id="word" value=""></label>
+<label>Count: <input id="count" value="3"></label>
+<input type="button" value="prepare" onclick="Prepare(event);"><br>
+<label>From: <input id="filter_from" value=""></label>
+<label>To: <input id="filter_to" value=""></label>
+<input type="button" value="Filter" onclick="Filter(event);"><br>
+<table id="values">
+</table>
+<script>
+'use strict';
+function IndexSorted(AArray, AValue) 
+{
+  var LLow = 0;
+  var LHigh = AArray.length;
+  var LMid;
+  while(LLow < LHigh)
+  {
+    LMid = LLow + LHigh >>> 1;
+    if(AArray[LMid] < AValue)
+      LLow = LMid + 1;
+    else
+      LHigh = LMid;
+	}
+  return LLow;
+}
+
+function SortedExists(AArray, AValue)
+{
+  var LIndex = IndexSorted(AArray, AValue);
+  return AValue === AArray[LIndex];
+}
+
+function InsertSorted(AArray, AValue) 
+{
+  var LIndex = IndexSorted(AArray, AValue);
+  if(AArray[LIndex] !== AValue)
+	  AArray.splice(LIndex, 0, AValue);
+}
+
+function Prepare(AEvent)
+{
+  var LWord = document.getElementById('word').value;
+  var LCount = document.getElementById('count').value;
+  var LList = [];
+  /*for(var i = 1; i <= LWord.length; i++)
+    Calc(LList, LWord, i);*/
+  Calc(LList, LWord, LCount);
+  View(LList);
+}
+
+function Calc(AList, AWord, ACount)
+{
+  function LAdd(AValues)
+  {
+    var LElement = '';
+    for(var i = 0; i < AValues.length; i++)
+      LElement += AWord[AValues[i]];
+    if(SortedExists(Words, LElement))
+      InsertSorted(AList[ACount], LElement);
+  }
+  function LNext(AValues, AIndexes)
+  {
+    for(var i = AValues.length - 1; i >= 0; i--)
+    {
+      AIndexes[AValues[i]] = false;
+      if(AValues[i] < AWord.length - 1)
+      {
+        for(var j = AValues[i] + 1; j < AIndexes.length; j++)
+          if(!AIndexes[j])
+            break;
+        if(j >= AIndexes.length)
+          AValues[i] = -1;
+        else
+        {
+          AValues[i] = j;
+          AIndexes[j] = true;
+          break;
+        }
+      }
+      else
+        AValues[i] = -1;
+    }
+    if(i === -1)
+      return false;
+    for(i = i + 1; i < AValues.length; i++)
+    {
+      for(var j = 0; j < AIndexes.length; j++)
+        if(!AIndexes[j])
+          break;
+      AValues[i] = j;
+      AIndexes[j] = true;
+    }
+    return true;
+  }
+  AList[ACount] = [];
+  var LValues = [];
+  var LIndexes = [];
+  for(var i = 0; i < AWord.length; i++)
+    LIndexes[i] = false;
+
+  for(var i = 0; i < ACount; i++)
+  {
+    LValues.push(i);
+    LIndexes[i] = true;
+  }
+  LAdd(LValues);
+  while(LNext(LValues, LIndexes))
+    LAdd(LValues)
+  //AList[ACount] = AList[ACount].sort();
+}
+
+function View(AList)
+{
+  var LFragHE = document.createDocumentFragment();
+  var i, j, LTRHE, LTDHE, LMax = 0;
+  LTRHE = LFragHE.appendChild(document.createElement('thead')).appendChild(document.createElement('tr'));
+  for(i = 1; i < AList.length; i++)
+  {
+    if(!AList[i])
+      continue;
+    LTRHE.appendChild(document.createElement('th')).innerHTML = i;
+    if(LMax < AList[i].length)
+      LMax = AList[i].length;
+  }
+  for(i = 0; i < LMax; i++)
+  {
+    LTRHE = LFragHE.appendChild(document.createElement('tr'));
+    for(j = 1; j < AList.length; j++)
+    {
+      if(!AList[j])
+        continue;
+          LTDHE = LTRHE.appendChild(document.createElement('td'));
+      if(AList[j][i])
+        LTDHE.innerHTML = AList[j][i];
+    }
+  }
+  var LTableHE = document.getElementById('values');
+  LTableHE.innerHTML = '';
+  LTableHE.appendChild(LFragHE);
+}
+
+function Filter()
+{
+  function LVisibleCalc(AText)
+  {
+    if(LFrom && LTo)
+      return (AText > LFrom) && (AText < LTo);
+    else
+    if(LFrom)
+      return (AText > LFrom);
+    else
+    if(LTo)
+      return (AText < LTo);
+    else
+      return true;
+  }
+  var LFrom = document.getElementById('filter_from').value;
+  var LTo = document.getElementById('filter_to').value;
+  var LTableHE = document.getElementById('values');
+  var LTDHEs = LTableHE.getElementsByTagName('td');
+  for(var i = 0; i < LTDHEs.length; i++)
+    LTDHEs[i].style.display = LVisibleCalc(LTDHEs[i].textContent) ? '' : 'none';
+}
+
+var Words;
+function WordsLoad()
+{
+  function LProcess(AEvent)
+  {
+    if(LRequest.readyState === XMLHttpRequest.DONE && LRequest.status === 200)
+      Words = LRequest.responseText.split('\r\n').sort();
+  }
+  if(Words)
+    return;
+  var LRequest = new XMLHttpRequest();
+  LRequest.open('GET', 'nom2.csv', false);
+  LRequest.onreadystatechange = LProcess;
+  LRequest.send();
+}
+WordsLoad();
+</script>
+</body>
+</html>
