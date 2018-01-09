@@ -28,12 +28,12 @@ table, td, th {
 </style>
 </head>
 <body>                                                        
-<label>Word: <input id="word" name="word" value=""></label>
-<label>Count: <input id="count" name="count" value="3" type="number"></label>
-<label>Only from vocabulary: <input id="voc" name="voc" checked="true" type="checkbox"></label>
+<label>Word: <input id="word" name="word" value="" onchange="SaveInput(event)"></label>
+<label>Count: <input id="count" name="count" value="3" type="number" onchange="SaveInput(event)"></label>
+<label>Only from vocabulary: <input id="voc" name="voc" checked="true" type="checkbox" onchange="SaveInput(event)"></label>
 <input type="button" value="prepare" onclick="Prepare(event);"><br>
-<label>From: <input id="filter_from" name="filter_from" value=""></label>
-<label>To: <input id="filter_to" name="filter_to" value=""></label>
+<label>From: <input id="filter_from" name="filter_from" value="" onchange="SaveInput(event)"></label>
+<label>To: <input id="filter_to" name="filter_to" value="" onchange="SaveInput(event)"></label>
 <input type="button" value="Filter" onclick="Filter(event);"><br>
 <table id="values">
 </table>
@@ -194,13 +194,37 @@ function Filter()
     LTDHEs[i].style.display = LVisibleCalc(LTDHEs[i].textContent) ? '' : 'none';
 }
 
+function LoadInputs()
+{
+  var LKeys = Object.keys(localStorage);
+  var LIdent = 'input_';
+  var LHE, LID;
+  for(var i = 0; i < LKeys.length; i++)
+    if(LKeys[i].substr(0, LIdent.length) === LIdent)
+    {
+      LID = LKeys[i].substr(LIdent.length);
+      LHE = document.getElementById(LID);
+      if(LHE)
+        if(LHE.type === 'checkbox')
+          LHE.checked = JSON.parse(localStorage[LKeys[i]]); 
+        else
+          LHE.value = localStorage[LKeys[i]];
+    }
+}
+
+function SaveInput(AEvent)
+{
+  localStorage.setItem('input_' + AEvent.target.id, 
+    AEvent.target.type === 'checkbox' ? AEvent.target.checked : AEvent.target.value);
+}
+
 var Words = [];
 function WordsLoad()
 {
   function LProcess(AEvent)
   {
     if(LRequest.readyState === XMLHttpRequest.DONE && LRequest.status === 200)
-      Words = LRequest.responseText.split('\n').sort();
+      Words = LRequest.responseText.split(location.protocol === 'file:' ? '\r\n' : '\n').sort();
   }
   if(Words.length)
     return;
@@ -210,6 +234,7 @@ function WordsLoad()
   LRequest.send();
 }
 WordsLoad();
+LoadInputs();
 </script>
 </body>
 </html>
