@@ -200,7 +200,7 @@ function WordsLoad()
   function LProcess(AEvent)
   {
     if(LRequest.readyState === XMLHttpRequest.DONE && LRequest.status === 200)
-      Words = LRequest.responseText.split('\r\n').sort();
+      Words = LRequest.responseText.split('\n').sort();
   }
   if(Words.length)
     return;
