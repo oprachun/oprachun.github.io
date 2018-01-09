@@ -28,11 +28,12 @@ table, td, th {
 </style>
 </head>
 <body>                                                        
-<label>Word: <input id="word" value=""></label>
-<label>Count: <input id="count" value="3"></label>
+<label>Word: <input id="word" name="word" value=""></label>
+<label>Count: <input id="count" name="count" value="3" type="number"></label>
+<label>Only from vocabulary: <input id="voc" name="voc" checked="true" type="checkbox"></label>
 <input type="button" value="prepare" onclick="Prepare(event);"><br>
-<label>From: <input id="filter_from" value=""></label>
-<label>To: <input id="filter_to" value=""></label>
+<label>From: <input id="filter_from" name="filter_from" value=""></label>
+<label>To: <input id="filter_to" name="filter_to" value=""></label>
 <input type="button" value="Filter" onclick="Filter(event);"><br>
 <table id="values">
 </table>
@@ -71,21 +72,22 @@ function Prepare(AEvent)
 {
   var LWord = document.getElementById('word').value;
   var LCount = document.getElementById('count').value;
+  var LOnlyFromVocabulary = document.getElementById('voc').checked;
   var LList = [];
   /*for(var i = 1; i <= LWord.length; i++)
     Calc(LList, LWord, i);*/
-  Calc(LList, LWord, LCount);
+  Calc(LList, LWord, LCount, LOnlyFromVocabulary);
   View(LList);
 }
 
-function Calc(AList, AWord, ACount)
+function Calc(AList, AWord, ACount, AOnlyFromVocabulary)
 {
   function LAdd(AValues)
   {
     var LElement = '';
     for(var i = 0; i < AValues.length; i++)
       LElement += AWord[AValues[i]];
-    if(SortedExists(Words, LElement))
+    if(!AOnlyFromVocabulary || SortedExists(Words, LElement))
       InsertSorted(AList[ACount], LElement);
   }
   function LNext(AValues, AIndexes)
@@ -192,7 +194,7 @@ function Filter()
     LTDHEs[i].style.display = LVisibleCalc(LTDHEs[i].textContent) ? '' : 'none';
 }
 
-var Words;
+var Words = [];
 function WordsLoad()
 {
   function LProcess(AEvent)
@@ -200,10 +202,10 @@ function WordsLoad()
     if(LRequest.readyState === XMLHttpRequest.DONE && LRequest.status === 200)
       Words = LRequest.responseText.split('\r\n').sort();
   }
-  if(Words)
+  if(Words.length)
     return;
   var LRequest = new XMLHttpRequest();
-  LRequest.open('GET', 'nom2.csv', false);
+  LRequest.open('GET', 'nom2.csv', true);
   LRequest.onreadystatechange = LProcess;
   LRequest.send();
 }
