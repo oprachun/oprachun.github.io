@@ -219,23 +219,8 @@ function SaveInput(AEvent)
     AEvent.target.type === 'checkbox' ? AEvent.target.checked : AEvent.target.value);
 }
 
-var Words = [];
-function WordsLoad()
-{
-  function LProcess(AEvent)
-  {
-    if(LRequest.readyState === XMLHttpRequest.DONE && LRequest.status === 200)
-      Words = LRequest.responseText.split(location.protocol === 'file:' ? '\r\n' : '\n').sort();
-  }
-  if(Words.length)
-    return;
-  var LRequest = new XMLHttpRequest();
-  LRequest.open('GET', 'nom2.csv', true);
-  LRequest.onreadystatechange = LProcess;
-  LRequest.send();
-}
-WordsLoad();
 LoadInputs();
 </script>
+<script src="nom2.js"></script>
 </body>
 </html>
