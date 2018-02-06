@@ -236,7 +236,7 @@ function PrepareIndex(AWord)
   {
     LIndex = LAlphabet.indexOf(AWord[i]);
     if(LIndex === -1)
-      throw new Error(' Not found ' + AWord[i]);
+      throw new Error('Not found "' + AWord[i] + '" in "' + AWord + '"');
     LResult[LIndex]++;
   }
   return LResult;
@@ -250,5 +250,6 @@ function WordSelect(AEvent)
     if(LWordsHE.children[i].style.backgroundColor)
       LWordsHE.children[i].style.backgroundColor = '';
   AEvent.target.style.backgroundColor = 'beige';
+  SaveInput({target: document.getElementById('word')});
   Prepare();
 }
