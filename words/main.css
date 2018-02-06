@@ -1,0 +1,23 @@
+body {
+  font: 13px Tahoma;
+  margin: 0;
+  padding: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0 auto;
+}
+tr {
+  background-color: #DDDDDD;
+}
+tr:nth-child(odd) {
+  background-color: #EEEEEE;
+}
+th {
+  background-color: initial;
+  white-space: nowrap;
+}
+table, td, th {
+  border: 1px solid gray;
+}
