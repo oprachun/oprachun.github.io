@@ -157,7 +157,7 @@ function View(AList)
   {
     if(!AList[i])
       continue;
-    LTRHE.appendChild(document.createElement('th')).innerHTML = i;
+    LTRHE.appendChild(document.createElement('th')).innerHTML = i + '(' + AList[i].length + ')';
     if(LMax < AList[i].length)
       LMax = AList[i].length;
   }
