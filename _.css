@@ -1,0 +1,19 @@
+body {
+  background-color: beige;
+}
+.container {
+  background-color: aquamarine;
+  border: 1px solid red;
+  margin: 0 auto;
+  padding: 10px;
+  width: 360px;
+}
+.text {
+  display: inline-block;
+  width: 6em;
+}
+.center {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}

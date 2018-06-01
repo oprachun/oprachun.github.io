@@ -1,48 +1,17 @@
-<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title></title>
-<style>
-body {
-  font: 13px Tahoma;
-  margin: 0;
-  padding: 0;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin: 0 auto;
-}
-tr {
-  background-color: #DDDDDD;
-}
-tr:nth-child(odd) {
-  background-color: #EEEEEE;
-}
-th {
-  background-color: initial;
-  height: 140px;
-  white-space: nowrap;
-}
-td {
-  white-space: nowrap;
-}
-th > div {
-  transform: translate(0px, 51px) rotate(-45deg);
-  width: 30px;
-}
-th > div > span {
-  border-bottom: 1px solid #ccc;
-  padding: 5px 10px;
-}
-table, td, th {
-  border: 1px solid gray;
-}
-</style>
+<title>Currency converter</title>
+<link href="_.css" rel="stylesheet" type="text/css">
+<script src="_.js"></script>
 </head>
 <body>
+  <div class="container">
+    <label><span class="text">Value</span><input id="value" value="1" type="number"></label><br>
+    <span id="result">&nbsp;</span><br>
+    <label><span class="text">Currency from</span><select id="currency_from"></select></label><br>
+    <label><span class="text">Currency to</span><select id="currency_to"></select></label><br>
+    <label class="center"><input id="calc" type="button" value="Calculate" disabled="disabled"></label>
+  </div>
 </body>
-<script src="data.js"></script>  
-<script src="vikings.js"></script>  
 </html>
