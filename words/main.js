@@ -11,10 +11,17 @@ function OnLoad()
   LoadInputs();
   Prepare();
   var LWordsHE = document.getElementById('words');
+  var LHE;
   for(var i = 0; i < Words2.length; i++)
   {
-    LWordsHE.appendChild(document.createElement('span')).innerHTML = Words2[i];
-    LWordsHE.appendChild(document.createElement('br'));
+    LHE = LWordsHE.appendChild(document.createElement('span'));
+    LHE.textContent = Words2[i];
+    LHE.value = Words2[i];
+    LHE.className = 'word';
+
+    LHE = LHE.appendChild(document.createElement('span'));
+    LHE.textContent = CalcCount(Words2[i]);
+    LHE.className = 'word-count';
   }
 }
 
@@ -148,6 +155,23 @@ function Calc2(AWord)
   return LList;
 }
 
+function CalcCount(AWord)
+{
+  function LExists(AIndex, AMainIndex)
+  {
+    for(var i = 0; i < AIndex.length; i++)
+      if(AIndex[i] > AMainIndex[i])
+        return false;
+    return true;
+  }
+  var LWordIndex = PrepareIndex(AWord);
+  var LCount = 0;
+  for(var i = 0; i < Indexes.length; i++)
+    if(LExists(Indexes[i], LWordIndex))
+      LCount++;
+  return LCount;
+}
+
 function View(AList)
 {
   var LFragHE = document.createDocumentFragment();
@@ -168,7 +192,7 @@ function View(AList)
     {
       if(!AList[j])
         continue;
-          LTDHE = LTRHE.appendChild(document.createElement('td'));
+      LTDHE = LTRHE.appendChild(document.createElement('td'));
       if(AList[j][i])
         LTDHE.innerHTML = AList[j][i];
     }
@@ -244,7 +268,7 @@ function PrepareIndex(AWord)
 
 function WordSelect(AEvent)
 {
-  document.getElementById('word').value = AEvent.target.textContent;
+  document.getElementById('word').value = AEvent.target.value;
   var LWordsHE = document.getElementById('words');
   for(var i = 0; i < LWordsHE.children.length; i++)
     if(LWordsHE.children[i].style.backgroundColor)

@@ -3,17 +3,22 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="stylesheet" href="main.css"/>
+<title>Слова зі слова</title>
 </head>
 <body>
-<div id="words" style="border:1px solid;display:inline-block;cursor:pointer;" onclick="WordSelect(event)"></div>
-<div style="border:1px solid;display:inline-block;vertical-align:top;">
-  <label>Word: <input id="word" name="word" value="" onchange="SaveInput(event)"></label>
-  <!--label>Count: <input id="count" name="count" value="3" type="number" onchange="SaveInput(event)"></label-->
-  <!--label>Only from vocabulary: <input id="voc" name="voc" checked="true" type="checkbox" onchange="SaveInput(event)"></label-->
-  <input type="button" value="prepare" onclick="Prepare(event);"><br>
-  <!--label>From: <input id="filter_from" name="filter_from" value="" onchange="SaveInput(event)"></label-->
-  <!--label>To: <input id="filter_to" name="filter_to" value="" onchange="SaveInput(event)"></label-->
-  <!--input type="button" value="Filter" onclick="Filter(event);"--><br>
+<div style="display: inline-block;vertical-align:top;">
+  <div style="border:1px solid;display:inline-block;">
+    <label>Word: <input id="word" name="word" value="" onchange="SaveInput(event)"></label>
+    <!--label>Count: <input id="count" name="count" value="3" type="number" onchange="SaveInput(event)"></label-->
+    <!--label>Only from vocabulary: <input id="voc" name="voc" checked="true" type="checkbox" onchange="SaveInput(event)"></label-->
+    <input type="button" value="prepare" onclick="Prepare(event);"><br>
+    <!--label>From: <input id="filter_from" name="filter_from" value="" onchange="SaveInput(event)"></label-->
+    <!--label>To: <input id="filter_to" name="filter_to" value="" onchange="SaveInput(event)"></label-->
+    <!--input type="button" value="Filter" onclick="Filter(event);"--><br>
+  </div><br>
+  <div id="words" class="words" onclick="WordSelect(event)"></div>
+</div>
+<div style="display: inline-block;">
   <table id="values"></table>
 </div>
 <script src="nom2.js"></script>

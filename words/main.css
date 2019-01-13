@@ -21,3 +21,17 @@ th {
 table, td, th {
   border: 1px solid gray;
 }
+.words {
+  border: 1px solid;
+  display: inline-block;
+  width: 575px;
+}
+.word {
+  cursor: pointer;
+  float: left;
+  width: 115px;
+}
+.word-count {
+  float: right;
+  padding-right: 2px;
+}
