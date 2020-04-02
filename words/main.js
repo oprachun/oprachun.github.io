@@ -193,8 +193,11 @@ function View(AList)
       if(!AList[j])
         continue;
       LTDHE = LTRHE.appendChild(document.createElement('td'));
-      if(AList[j][i])
+      if(AList[j][i]) {
         LTDHE.innerHTML = AList[j][i];
+        if(WordsPrev.indexOf(AList[j][i]) === -1)
+          LTDHE.className = 'is-new';
+      }
     }
   }
   var LTableHE = document.getElementById('values');

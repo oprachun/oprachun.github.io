@@ -35,3 +35,6 @@ table, td, th {
   float: right;
   padding-right: 2px;
 }
+.is-new {
+  background-color: aquamarine;
+}
