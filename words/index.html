@@ -7,18 +7,19 @@
 </head>
 <body>
 <div style="display: inline-block;vertical-align:top;">
-  <div style="border:1px solid;display:inline-block;">
+  <form style="border:1px solid;display:inline-block;" onsubmit="Prepare(event)">
     <label>Word: <input id="word" name="word" value="" onchange="SaveInput(event)"></label>
     <!--label>Count: <input id="count" name="count" value="3" type="number" onchange="SaveInput(event)"></label-->
     <!--label>Only from vocabulary: <input id="voc" name="voc" checked="true" type="checkbox" onchange="SaveInput(event)"></label-->
-    <input type="button" value="prepare" onclick="Prepare(event);"><br>
+    <input type="button" value="prepare" onclick="Prepare(event)"><br>
     <!--label>From: <input id="filter_from" name="filter_from" value="" onchange="SaveInput(event)"></label-->
     <!--label>To: <input id="filter_to" name="filter_to" value="" onchange="SaveInput(event)"></label-->
     <!--input type="button" value="Filter" onclick="Filter(event);"--><br>
-  </div><br>
-  <div id="words" class="words" onclick="WordSelect(event)"></div>
+    <label>Words show: <input id="words_show" name="words_show" type="checkbox" onchange="document.getElementById('words').classList.toggle('hidden')"></label>
+  </form><br>
+  <div id="words" class="words hidden" onclick="WordSelect(event)"></div>
 </div>
-<div style="display: inline-block;">
+<div  style="display: inline-block;">
   <table id="values"></table>
 </div>
 <script src="nomPrev.js"></script>

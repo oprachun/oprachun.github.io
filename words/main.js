@@ -57,6 +57,8 @@ function InsertSorted(AArray, AValue)
 
 function Prepare(AEvent)
 {
+  if(AEvent)
+    AEvent.preventDefault();
   var LWord = document.getElementById('word').value.toLowerCase();
   if(!LWord)
     return;
